@@ -12,22 +12,25 @@ public:
     vector<vector<int> > levelOrder(TreeNode *root) {
         vector<vector<int> > result;
         vector<int> record;
-        vector<TreeNode*> queue;
-        int index_1 = 0, index_2 = 1;
+        queue<TreeNode*> nodes;
+        TreeNode *node;
+        int level_count = 1;
         if(root == NULL)
             return result;
-        queue.push_back(root);
-        while(index_1 != queue.size()) {
-            record.push_back(queue.at(index_1)->val);
-            if(queue.at(index_1)->left != NULL) {
-                queue.push_back(queue.at(index_1)->left);
+        nodes.push(root);
+        while(!nodes.empty()) {
+            node = nodes.front();
+            record.push_back(node->val);
+            if(node->left != NULL) {
+                nodes.push(node->left);
             }
-            if(queue.at(index_1)->right != NULL) {
-                queue.push_back(queue.at(index_1)->right);
+            if(node->right != NULL) {
+                nodes.push(node->right);
             }
-            index_1 ++;
-            if(index_1 == index_2) {
-                index_2 = queue.size();
+            level_count--;
+            nodes.pop();
+            if(level_count == 0) {
+                level_count = nodes.size();
                 result.push_back(record);
                 record.clear();
             }

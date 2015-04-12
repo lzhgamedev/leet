@@ -9,12 +9,13 @@
  */
 class Solution {
 public:
-    vector<vector<int> > levelOrderBottom(TreeNode *root) {
+    vector<vector<int> > zigzagLevelOrder(TreeNode *root) {
         vector<vector<int> > result;
         vector<int> record;
-        queue<TreeNode*> nodes;
+        queue<TreeNode *> nodes;
         TreeNode *node;
         int level_count = 1;
+        bool b_reverse = false;
         if(root == NULL)
             return result;
         nodes.push(root);
@@ -29,13 +30,15 @@ public:
             }
             level_count--;
             nodes.pop();
-            if(level_count == 0){
+            if(level_count == 0) {
                 level_count = nodes.size();
+                if(b_reverse)
+                    reverse(record.begin(), record.end());
+                b_reverse = !b_reverse;
                 result.push_back(record);
                 record.clear();
             }
+                
         }
-        reverse(result.begin(), result.end());
-        return result;
     }
 };
