@@ -11,25 +11,26 @@ class Solution {
 public:
     vector<vector<int> > levelOrder(TreeNode *root) {
         vector<vector<int> > result;
+        vector<int> record;
         vector<TreeNode*> queue;
         int index_1 = 0, index_2 = 1;
         if(root == NULL)
             return result;
         queue.push_back(root);
         while(index_1 != queue.size()) {
-            vector<int> record;
-            while(index_1 != index_2) {
-                record.push_back(queue.at(index_1)->val);
-                if(queue.at(index_1)->left != NULL) {
-                    queue.push_back(queue.at(index_1)->left);
-                }
-                if(queue.at(index_1)->right != NULL) {
-                    queue.push_back(queue.at(index_1)->right);
-                }
-                index_1 ++;
+            record.push_back(queue.at(index_1)->val);
+            if(queue.at(index_1)->left != NULL) {
+                queue.push_back(queue.at(index_1)->left);
             }
-            index_2 = queue.size();
-            result.push_back(record);
+            if(queue.at(index_1)->right != NULL) {
+                queue.push_back(queue.at(index_1)->right);
+            }
+            index_1 ++;
+            if(index_1 == index_2) {
+                index_2 = queue.size();
+                result.push_back(record);
+                record.clear();
+            }
         }
         return result;
     }

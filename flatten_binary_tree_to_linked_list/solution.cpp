@@ -10,27 +10,28 @@
 class Solution {
 public:
     void flatten(TreeNode *root) {
-        stack<TreeNode*> nodes;
-        TreeNode* node;
+        TreeNode *node_right_pre, *node_right_cur;
         if(root == NULL)
             return;
-        nodes.push(root);
-        while(!nodes.empty()) {
-            node = nodes.top();
-            nodes.pop();
-            if(node->right != NULL)
-                nodes.push(node->right);
-            if(node->left != NULL) {
-                nodes.push(node->left);
-                node->right = node->left;
-                node->left = NULL;
-            } else {
-                if(!nodes.empty())  
-                    node->right = nodes.top();
-                else
-                    return;
+        node_right_pre = root->right;
+        while(root->left != NULL || root->right != NULL || node_right_pre != NULL) {
+            if(root->right != NULL && node_right_pre != root->right) {
+                node_right_cur = root->right;
+                while(node_right_cur->right != NULL) {
+                    node_right_cur = node_right_cur->right;
+                }
+                node_right_cur->right = node_right_pre;
+                node_right_pre = root->right;
             }
-            
+            if(root->left != NULL) {
+                root->right = root->left;
+                root->left = NULL;
+                root = root->right;
+            } else if(node_right_pre != NULL){
+                root->right = node_right_pre;
+                root = node_right_pre;
+                node_right_pre = root->right;
+            }
         }
     }
 };
